@@ -106,5 +106,5 @@ Explosion：Fade。
 
 第三个事件：子弹击中Monster，两者毁灭，产生爆炸特效：双击，选中Bullet，添加条件：On collision with another object（接触另一对象），添加Action，选中Bullet，添加行为Destroy ，再添加Action，选中Monster，添加行为Spawn another object（选择爆炸特效对象，输入1（“Main”图层）,Image point（发射起点）保持默认为0），再添加Action，选中Monster，添加行为Destroy。如下：![](images/20.png) 
 
-这样一个小型游戏基本成型。
+这样一个小型游戏基本成型。 
  ![](images/g.gif)
