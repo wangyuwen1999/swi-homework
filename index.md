@@ -34,6 +34,10 @@
 ![](images/16.png) 
 
 默认CT2会自动把我们的对象命名为Sprite,Sprite2,Sprite3,Sprite4，我们可以在他们各自的Properties bar属性面板里的Name属性里更改。依次更改Player,Monster,Bullet,Explosion（玩家，怪物，子弹，爆炸特效）。
+
+
+
+
 ![](images/11.png)
 
 
@@ -62,7 +66,10 @@ Bullet: Bullet movement，Destroy outside layout；
 
 Explosion：Fade。
 
-此时，我们运行查看游戏，会发现怪物一下子就飞出去了。我们来编辑下怪物的行为，选中Monster怪物对象。看到properties bar属性面板中，我们会发现属性栏里多出了其他一些属性，这些属性是添加了行为后才有的。![](images/14.png)
+此时，我们运行查看游戏，会发现怪物一下子就飞出去了。我们来编辑下怪物的行为，选中Monster怪物对象。看到properties bar属性面板中，我们会发现属性栏里多出了其他一些属性，这些属性是添加了行为后才有的。
+
+
+![](images/14.png)
 
  更改speed速度为80（单位：像素/秒） 
 同样的方法给Bullet子弹对象的速度更改为400，Explosion对象的Fade行为的Fade out time淡出时间为0.5秒
@@ -78,7 +85,13 @@ Explosion：Fade。
 第一个事件 ：
 使player面向鼠标：
 
-在event sheet的空白位置双击，将打开添加事件对话框：不同的对象根据他们要做的行为拥有不同的条件和动作，在对话框中双击System对象，对话框中列出了所有System对象的条件：双击Every tick条件插入到事件表中。对话框将关闭，Every tick事件被创建，但没有actions(动作)。![](images/17.png)
+在event sheet的空白位置双击，将打开添加事件对话框：不同的对象根据他们要做的行为拥有不同的条件和动作，在对话框中双击System对象，对话框中列出了所有System对象的条件：双击Every tick条件插入到事件表中。对话框将关闭，Every tick事件被创建，但没有actions(动作)
+
+。
+
+
+
+![](images/17.png)
 
 点击Add action，弹出对话框，对话框中列出了可以添加动作的对象，双击player对象，对话框列出了player对象可添加的动作，选取Set angle towards position动作该动作会自动计算角色到给定的X,Y坐标的角度。 点击Done完成操作
 接下来要指定X,Y坐标值（动作的参数，条件同样可以带有参数）。我们输入Mouse.X和Mouse.Y 点击Done完成操作，这样
@@ -93,4 +106,4 @@ Explosion：Fade。
 第三个事件：子弹击中Monster，两者毁灭，产生爆炸特效：双击，选中Bullet，添加条件：On collision with another object（接触另一对象），添加Action，选中Bullet，添加行为Destroy ，再添加Action，选中Monster，添加行为Spawn another object（选择爆炸特效对象，输入1（“Main”图层）,Image point（发射起点）保持默认为0），再添加Action，选中Monster，添加行为Destroy。如下：![](images/20.png) 
 
 这样一个小型游戏基本成型。
- ![](images/K.gif)
+ ![](images/g.gif)
