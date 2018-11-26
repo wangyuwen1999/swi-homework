@@ -20,4 +20,41 @@
         每一次电机左转三圈，再右转三圈；
 * 停机；
 
-        READ (water_height,)
+        READ (water_height,soak_time,wash_time,rush_time)//读取预设水位，浸泡时间，漂洗时间，脱水时间；
+        WHILE(height<water_height){
+                repeat
+                water_in_swicth(open)
+        }
+        water_in_swicth(close)
+        ENDWHILE
+        WHILE(soak_time>0){
+                repeat
+                soak_time--//浸泡时间减少；
+        }
+        ENDWHILE
+        WHILE(wash_time>0){
+                repeat
+                FOR i=1 to 3
+                        motor_run(left)//转机左转三圈；
+                ENDFOR
+                FOR i=1 to 3
+                        motor_run(right)//转机右转三圈；
+                ENDFOR
+                wash_time--//漂洗时间减少；
+        }
+        ENDWHILE
+        motor(stop)//转机停止；
+        WHILE(water_height>0){
+                repeat
+                water_out_swicth(open)
+        }
+        ENDWHILE
+        water_out_swicth(close)
+        WHILE(rush_time>0){
+                repeat
+                motor(open)
+                rush_time--//脱水时间减少；
+        }
+        ENDWHILE
+        motor(close)
+        halt(success) 
