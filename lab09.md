@@ -14,10 +14,11 @@
     * 顺序结构；
     * 循环结构；
     * 选择结构；
+
+
+
 # 洗衣机控制程序设计：
-
-
-
+        
         READ (water_height,soak_time,wash_time,rush_time)//读取预设水位，浸泡时间，漂洗时间，脱水时间；
         WHILE(height<water_height){
                 repeat
@@ -56,4 +57,3 @@
         ENDWHILE
         motor(close)
         halt(success) 
-        
