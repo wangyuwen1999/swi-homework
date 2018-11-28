@@ -122,3 +122,24 @@ int main(){
     return 0;
 }
 ```
+* 折半查
+```c
+//将数组由大到小排序；
+int main(){
+    int s[100];
+    for(int i=0;i<100;++i){//读取数组；
+        scanf("%d",&s[i]);
+    }
+    int gap,i,j,temp;
+    for(gap=n/2;gap>0;gap/=2){
+        for(int i=gap;i<100;++i){
+            for(j=i-gap;j>=0&&s[j]>s[j+gap];j-=gap){
+                temp=s[j];
+                s[j]=s[j+gap];
+                s[j+gap]=temp;
+            }
+        }
+    }
+    return 0;
+}
+```
