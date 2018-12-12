@@ -81,7 +81,7 @@ char whereGoNext(int Hx,int Hy,int Fx,int Fy){
 	if(map[snackY[slen-1]-1][snackX[slen-1]]=='X'&&(map[snackY[slen-1]+1][snackX[slen-1]]=='X'||map[snackY[slen-1]][snackX[slen-1]-1]=='X'))return 'd';//如果蛇的上边与左边或上边与下边或上下左均有身体则向右走；
 	else if(map[snackY[slen-1]][snackX[slen-1]-1]=='X'&&(map[snackY[slen-1]][snackX[slen-1]+1]=='X'||map[snackY[slen-1]+1][snackX[slen-1]]=='X'))return 'w';//如果蛇的左边与右边或左边与下边或左右下均有身体则向上走；
 	else {
-	    if(snackX[slen-1]==snackX[slen-2]){//
+	    if(snackX[slen-1]==snackX[slen-2]){//食物在蛇头左边或右边则向该方向走；在正前方则直走；
 		    if(distanceX>0)return 'd';
 		    else if(distanceX<0)return 'a';
 		    else if(distanceX==0){
@@ -89,7 +89,7 @@ char whereGoNext(int Hx,int Hy,int Fx,int Fy){
 			    else return 's'; 
 		    }
 	    }
-	    else if(snackY[slen-1]==snackY[slen-2]){//
+	    else if(snackY[slen-1]==snackY[slen-2]){//食物在蛇头左边或右边则向该方向走；在正前方则直走；
 		    if(distanceY>0)return 's';
 		    else if(distanceY<0)return 'w';
 		    else if(distanceY==0){
