@@ -76,27 +76,27 @@ whereGoNext(Hx,Hy,Fx,Fy)函数是蛇智能实现的原因，它会根据蛇与�
 
 ```c
 char whereGoNext(int Hx,int Hy,int Fx,int Fy){
-	int distanceX=Fx-Hx;
-	int distanceY=Fy-Hy;
-	if(map[snackY[slen-1]-1][snackX[slen-1]]=='X'&&(map[snackY[slen-1]+1][snackX[slen-1]]=='X'||map[snackY[slen-1]][snackX[slen-1]-1]=='X'))return 'd';
-	else if(map[snackY[slen-1]][snackX[slen-1]-1]=='X'&&(map[snackY[slen-1]][snackX[slen-1]+1]=='X'||map[snackY[slen-1]+1][snackX[slen-1]]=='X'))return 'w';
+	int distanceX=Fx-Hx;//定义蛇与食物的水平距离；
+	int distanceY=Fy-Hy;//定义蛇与食物的垂直距离；
+	if(map[snackY[slen-1]-1][snackX[slen-1]]=='X'&&(map[snackY[slen-1]+1][snackX[slen-1]]=='X'||map[snackY[slen-1]][snackX[slen-1]-1]=='X'))return 'd';//如果蛇的上边与左边或上边与下边或上下左均有身体则向右走；
+	else if(map[snackY[slen-1]][snackX[slen-1]-1]=='X'&&(map[snackY[slen-1]][snackX[slen-1]+1]=='X'||map[snackY[slen-1]+1][snackX[slen-1]]=='X'))return 'w';//如果蛇的左边与右边或左边与下边或左右下均有身体则向上走；
 	else {
-		if(snackX[slen-1]==snackX[slen-2]){
-		if(distanceX>0)return 'd';
-		else if(distanceX<0)return 'a';
-		else if(distanceX==0){
-			if(distanceY<0)return 'w';
-			else return 's'; 
-		}
-	}
-	else if(snackY[slen-1]==snackY[slen-2]){
-		if(distanceY>0)return 's';
-		else if(distanceY<0)return 'w';
-		else if(distanceY==0){
+	    if(snackX[slen-1]==snackX[slen-2]){//
+		    if(distanceX>0)return 'd';
+		    else if(distanceX<0)return 'a';
+		    else if(distanceX==0){
+			    if(distanceY<0)return 'w';
+			    else return 's'; 
+		    }
+	    }
+	    else if(snackY[slen-1]==snackY[slen-2]){//
+		    if(distanceY>0)return 's';
+		    else if(distanceY<0)return 'w';
+		    else if(distanceY==0){
 			if(distanceX>0)return 'd';
 			else return 'a';
-		}
-	}
+		    }
+	    }
     }	
 }
 ```
