@@ -75,28 +75,96 @@ whereGoNext(Hx,Hy,Fx,Fy)函数是蛇智能实现的原因，它会根据蛇与�
 ### 具体代码实现：
 
 ```c
-char whereGoNext(int Hx,int Hy,int Fx,int Fy){
-	int distanceX=Fx-Hx;//定义蛇与食物的水平距离；
-	int distanceY=Fy-Hy;//定义蛇与食物的垂直距离；
-	if(map[snackY[slen-1]-1][snackX[slen-1]]=='X'&&(map[snackY[slen-1]+1][snackX[slen-1]]=='X'||map[snackY[slen-1]][snackX[slen-1]-1]=='X'))return 'd';//如果蛇的上边与左边或上边与下边或上下左均有身体则向右走；
-	else if(map[snackY[slen-1]][snackX[slen-1]-1]=='X'&&(map[snackY[slen-1]][snackX[slen-1]+1]=='X'||map[snackY[slen-1]+1][snackX[slen-1]]=='X'))return 'w';//如果蛇的左边与右边或左边与下边或左右下均有身体则向上走；
+char headturn(int distanceX,int distanceY){//定义蛇头运动方向； 
+	if(snackX[slen-1]==snackX[slen-2]){
+			if(distanceX>0){
+				Xd=1;
+			}
+			else if(distanceX<0){
+				Xd=-1;
+			}
+			else if(distanceX==0){
+				if(distanceY<0)Yd=-1;
+				else if(distanceY>0)Yd=1;
+			} 
+		}
+	else if(snackY[slen-1]==snackY[slen-2]){
+			if(distanceY>0){
+				Yd=1;
+			}
+			else if(distanceY<0){
+				Yd=-1;
+			}
+			else if(distanceY==0){
+				if(distanceX<0)Xd=-1;
+				else if(distanceX>0)Xd=1;
+			} 
+		}
+}
+int ndeath(int Xd,int Yd){//判断蛇头下一次运动是否会死亡； 
+	int ndea=1;
+	if(Xd==0&&Yd==0);
 	else {
-	    if(snackX[slen-1]==snackX[slen-2]){//食物在蛇头左边或右边则向该方向走；在正前方则直走；
-		    if(distanceX>0)return 'd';
-		    else if(distanceX<0)return 'a';
-		    else if(distanceX==0){
-			    if(distanceY<0)return 'w';
-			    else return 's'; 
-		    }
-	    }
-	    else if(snackY[slen-1]==snackY[slen-2]){//食物在蛇头左边或右边则向该方向走；在正前方则直走；
-		    if(distanceY>0)return 's';
-		    else if(distanceY<0)return 'w';
-		    else if(distanceY==0){
-			if(distanceX>0)return 'd';
-			else return 'a';
-		    }
-	    }
-    }	
+		if(map[snackY[slen-1]+Yd][snackX[slen-1]+Xd]=='X')ndea=0;
+	}
+	if(ndea==1)time=1;
+	return ndea;
+}
+void headcorrect(int time){//矫正蛇头方向，使其不死； 
+	if(time%3!=0||time==0){
+		if(Xd==0){
+			if(Yd==-1)Yd=1;
+			else if(Yd==1)Yd=-1;
+		}
+		else if(Yd==0){
+			if(Xd==1)Xd=-1;
+			else if(Xd==-1)Xd=1;
+		}
+	}
+	else {
+		Xd=1;//如果一定会死，那就死吧； 
+	} 
+}
+char whereGoNext(int Hx,int Hy,int Fx,int Fy){
+	int distanceX=Fx-Hx;
+	int distanceY=Fy-Hy;
+	if(ndeath(Xd,Yd)!=0){//判断是否会死，不会则以蛇头返回的正确方向移动； 
+		if(Xd!=0){
+			if(Xd==1){
+				if(distanceX-1==0){
+					Xd=0;//到达指定位置，将下一次方向置为零，等待 headturn(distanceX,distanceY)返回下个正确方向； 
+				}
+				return 'd';
+			}
+			if(Xd==-1){
+				if(distanceX+1==0){
+					Xd=0;
+					}
+				return 'a';
+			}
+		}
+		else if(Yd!=0){
+			if(Yd==1){
+				if(distanceY-1==0){
+					Yd=0;
+				}
+				return 's';
+			}
+			if(Yd==-1){
+				if(distanceY+1==0){
+					Yd=0;
+				}
+				return 'w';
+			}
+		}
+		else if(Xd==0&&Yd==0){//方向为零时，返回下一个正确方向； 
+			char c=headturn(distanceX,distanceY);
+			return c;
+		}
+	}
+	else{//如果下一个移动会死亡，矫正，三次矫正仍不行则死亡； 
+		headcorrect(time);
+		++time;//矫正次数； 
+	}
 }
 ```
