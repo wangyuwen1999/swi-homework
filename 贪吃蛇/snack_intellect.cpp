@@ -11,12 +11,15 @@ int run=1;//判断游戏是否继续进行；
 int slen=4;//记录蛇的初始长度； 
 int x;//记录蛇在x上移动的距离； 
 int y;//记录蛇在y上移动的距离；
-int foodX=1;
-int foodY=12;
-int food=0;//判断蛇的下一次移动是否遇到食物； 
+int foodX=5;//记录食物X位置 
+int foodY=1;/记录食物Y位置 
+int food=0;//判断蛇的下一次移动是否遇到食物；
+int Xd=0;//记录蛇头X方向； 
+int Yd=0; //记录蛇头Y方向； 
+int time=0;//记录矫正次数； 
 char map[20][21]={//初始地图； 
 	"********************",
-	"*XXXH              *",
+	"*XXXH$             *",
 	"*                  *",
 	"*                  *",
 	"*                  *",
@@ -27,7 +30,7 @@ char map[20][21]={//初始地图；
 	"*                  *",
 	"*                  *",
 	"*                  *",
-	"*$                 *",
+	"*                  *",
 	"*                  *",
 	"*                  *",
 	"*                  *",
@@ -47,44 +50,111 @@ int main(){
 	print_map();
 	char c;
 	while(run!=0){
-		usleep(1000);
+		sleep(1);
 		c=whereGoNext(snackX[slen-1],snackY[slen-1],foodX,foodY);
 		snack_move(c);
 		print_map();
-		//printf("%d,%d==%d,%d",foodX,foodY,snackX[slen-1],snackY[slen-1]);
-	}
-	if(slen==MAX_len){
+		if(slen==MAX_len){
 			printf("you win!!!");
+			break;
 		}
-	else printf("game is over!!!");
+		printf("%d,%d==%d,%d",foodX,foodY,snackX[slen-1],snackY[slen-1]);
+	}
+	if(slen!=MAX_len)printf("game is over!!!");
 }
 
+
+char headturn(int distanceX,int distanceY){//定义蛇头运动方向； 
+	if(snackX[slen-1]==snackX[slen-2]){
+			if(distanceX>0){
+				Xd=1;
+			}
+			else if(distanceX<0){
+				Xd=-1;
+			}
+			else if(distanceX==0){
+				if(distanceY<0)Yd=-1;
+				else if(distanceY>0)Yd=1;
+			} 
+		}
+	else if(snackY[slen-1]==snackY[slen-2]){
+			if(distanceY>0){
+				Yd=1;
+			}
+			else if(distanceY<0){
+				Yd=-1;
+			}
+			else if(distanceY==0){
+				if(distanceX<0)Xd=-1;
+				else if(distanceX>0)Xd=1;
+			} 
+		}
+}
+int ndeath(int Xd,int Yd){//判断蛇头下一次运动是否会死亡； 
+	int ndea=1;
+	if(Xd==0&&Yd==0);
+	else {
+		if(map[snackY[slen-1]+Yd][snackX[slen-1]+Xd]=='X')ndea=0;
+	}
+	if(ndea==1)time=1;
+	return ndea;
+}
+void headcorrect(int time){//矫正蛇头方向，使其不死； 
+	if(time%3!=0||time==0){
+		if(Xd==0){
+			if(Yd==-1)Yd=1;
+			else if(Yd==1)Yd=-1;
+		}
+		else if(Yd==0){
+			if(Xd==1)Xd=-1;
+			else if(Xd==-1)Xd=1;
+		}
+	}
+	else {
+		Xd=1;//如果一定会死，那就死吧； 
+	} 
+}
 char whereGoNext(int Hx,int Hy,int Fx,int Fy){
 	int distanceX=Fx-Hx;
 	int distanceY=Fy-Hy;
-	if(map[snackY[slen-1]-1][snackX[slen-1]]=='X'&&(map[snackY[slen-1]+1][snackX[slen-1]]=='X'||map[snackY[slen-1]][snackX[slen-1]-1]=='X'))return 'd';
-	else if(map[snackY[slen-1]][snackX[slen-1]-1]=='X'&&(map[snackY[slen-1]][snackX[slen-1]+1]=='X'||map[snackY[slen-1]+1][snackX[slen-1]]=='X'))return 'w';
-	//else if(map[snackY[slen-1]][snackX[slen-1]+1]=='X'&&(map[snackY[slen-1]][snackX[slen-1]-1]=='X'||map[snackY[slen-1]-1][snackX[slen-1]]=='X'))return 's';
-	//else if(map[snackY[slen-1]+1][snackX[slen-1]]=='X'&&(map[snackY[slen-1]-1][snackX[slen-1]]=='X'||map[snackY[slen-1]][snackX[slen-1]+1]=='X'))return 'a';
-	else {
-		if(snackX[slen-1]==snackX[slen-2]){
-		if(distanceX>0)return 'd';
-		else if(distanceX<0)return 'a';
-		else if(distanceX==0){
-			if(distanceY<0)return 'w';
-			else return 's'; 
+	if(ndeath(Xd,Yd)!=0){//判断是否会死，不会则以蛇头返回的正确方向移动； 
+		if(Xd!=0){
+			if(Xd==1){
+				if(distanceX-1==0){
+					Xd=0;//到达指定位置，将下一次方向置为零，等待 headturn(distanceX,distanceY)返回下个正确方向； 
+				}
+				return 'd';
+			}
+			if(Xd==-1){
+				if(distanceX+1==0){
+					Xd=0;
+					}
+				return 'a';
+			}
+		}
+		else if(Yd!=0){
+			if(Yd==1){
+				if(distanceY-1==0){
+					Yd=0;
+				}
+				return 's';
+			}
+			if(Yd==-1){
+				if(distanceY+1==0){
+					Yd=0;
+				}
+				return 'w';
+			}
+		}
+		else if(Xd==0&&Yd==0){//方向为零时，返回下一个正确方向； 
+			char c=headturn(distanceX,distanceY);
+			return c;
 		}
 	}
-	else if(snackY[slen-1]==snackY[slen-2]){
-		if(distanceY>0)return 's';
-		else if(distanceY<0)return 'w';
-		else if(distanceY==0){
-			if(distanceX>0)return 'd';
-			else return 'a';
-		}
+	else{//如果下一个移动会死亡，矫正，三次矫正仍不行则死亡； 
+		headcorrect(time);
+		++time;//矫正次数； 
 	}
-	}
-	
 }
 void print_map(void){//打印地图； 
 	system("cls");
@@ -144,7 +214,7 @@ void snack_move(char c){//蛇的移动 ：通过调用 map_snack和list_snack实现；
 				if(map[snackY[slen-1]+y][snackX[slen-1]+x]=='$')food=1;
 				map_snack(x,y);
 				list_snack(x,y);
-			};
+			}
 			break;
 		case 'a':case 'A':
 			if(map[snackY[slen-1]][snackX[slen-1]-1]=='*'||map[snackY[slen-1]][snackX[slen-1]-1]=='X')run=0;
